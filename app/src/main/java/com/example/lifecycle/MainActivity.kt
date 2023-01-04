@@ -6,18 +6,31 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
+import androidx.lifecycle.Lifecycle
+import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var button: Button
+    private lateinit var button: Button
+    private lateinit var timer: Timer
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        button = findViewById(R.id.btn_activity)
+        // Se inicializa el objeto con el Lifecycle object que la activity posee
+        timer = Timer(this.lifecycle)
 
-        Log.i("LyfeCycle", "OnCreate")
+        button = findViewById(R.id.btn_activity)
+        button.setOnClickListener {
+            startActivity(Intent(this, DialogActivity::class.java))
+        }
+
+        // Inicializa timber library
+        Timber.plant(Timber.DebugTree())
+        // Implementacion de Timber en vez de log
+        Timber.i("onCreate called")
         Toast.makeText(this, "onCreate", Toast.LENGTH_SHORT).show()
     }
 
@@ -38,9 +51,7 @@ class MainActivity : AppCompatActivity() {
         Log.i("LyfeCycle", "OnResume")
         Toast.makeText(this, "OnResume", Toast.LENGTH_SHORT).show()
 
-        button.setOnClickListener {
-            startActivity(Intent(this, DialogActivity::class.java))
-        }
+
     }
 
     override fun onPause() {
