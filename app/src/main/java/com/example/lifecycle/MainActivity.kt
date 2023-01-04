@@ -20,7 +20,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // Se inicializa el objeto con el Lifecycle object que la activity posee
-        timer = Timer(this.lifecycle)
+        //timer = Timer(this.lifecycle)
+
+        // Se agega observador
+        lifecycle.addObserver(Timer())
 
         button = findViewById(R.id.btn_activity)
         button.setOnClickListener {

@@ -6,7 +6,8 @@ import android.os.Looper
 import androidx.lifecycle.*
 
 // Se agrega un contructor LifecycleObject y se implementa LifecycleObserver interface
-class Timer(lifecycle: Lifecycle) : LifecycleObserver {
+//class Timer(lifecycle: Lifecycle) : LifecycleObserver {
+class Timer : LifecycleEventObserver{
 
     var secondsCount = 0
 
@@ -14,13 +15,17 @@ class Timer(lifecycle: Lifecycle) : LifecycleObserver {
     private lateinit var runnable: Runnable
 
     // se conecta el lifecycle object a esta clase (observador)
+    /*
     init {
+
         lifecycle.addObserver(this)
     }
 
+     */
+
 
     // Anotacion que indica que el siguiente metodoo esta observando onStart lifecycle event
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    //@OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun startTimer() {
         runnable = Runnable {
             secondsCount++
@@ -31,11 +36,23 @@ class Timer(lifecycle: Lifecycle) : LifecycleObserver {
         handler.postDelayed(runnable, 1000)
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    //@OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun stopTimer() {
         handler.removeCallbacks(runnable)
     }
 
+    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+        when(event){
+            Lifecycle.Event.ON_START -> {
+                startTimer()
+            }
+            Lifecycle.Event.ON_STOP -> {
+                stopTimer()
+            }
+
+            else -> { }
+        }
+    }
 
 
 }
